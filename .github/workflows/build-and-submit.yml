@@ -1,0 +1,125 @@
+name: Build & Submit to Staging/Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'stagingかproductionブランチを選択してください。productionの場合、アプリバージョンを上げてから実行してください'
+        type: boolean
+        required: true
+        default: false
+
+jobs:
+  check-branch-and-permissions:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.confirm }}
+    steps:
+      - name: Check branch
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+
+          if [ "$BRANCH_NAME" != "staging" ] && [ "$BRANCH_NAME" != "production" ]; then
+            echo "Error: ブランチ '$BRANCH_NAME' は許可されていません。staging または production を使用してください。"
+            exit 1
+          fi
+
+      - name: Check if user has admin permission
+        run: |
+          USER_PERMISSION=$(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                          -H "Accept: application/vnd.github.v3+json" \
+                          https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission | jq -r .permission)
+          if [ "$USER_PERMISSION" != "admin" ]; then
+            echo "Admin権限のないユーザーは実行できません"
+            exit 1
+          fi
+
+  eas-build-and-submit:
+    needs: check-branch-and-permissions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Copy OpenAPI
+        run: |
+          cp -r apps/server/docs/ openapi/
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          package: '@aeon-pet/mobile'
+
+      - name: Build API Client
+        run: pnpm --filter @aeon-pet/mobile prepare:ci
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set env to stg
+        if: ${{ github.base_ref == 'staging' || github.ref == 'refs/heads/staging' }}
+        run: |
+          echo "API_URL=${{ secrets.API_URL_STG }}" >> $GITHUB_ENV
+          echo "APP_VARIANT=staging" >> $GITHUB_ENV
+          echo "GOOGLE_SERVICES_FILE_ANDROID_BASE64=${{ secrets.GOOGLE_SERVICES_FILE_ANDROID_BASE64_STG }}" >> $GITHUB_ENV
+          echo "GOOGLE_SERVICES_FILE_IOS_BASE64=${{ secrets.GOOGLE_SERVICES_FILE_IOS_BASE64_STG }}" >> $GITHUB_ENV
+          echo "GOOGLE_SERVICE_ACCOUNT_KEY_BASE64=${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY_BASE64_STG }}" >> $GITHUB_ENV
+
+      - name: Set env to prd
+        if: ${{ github.base_ref == 'production' || github.ref == 'refs/heads/production' }}
+        run: |
+          echo "API_URL=${{ secrets.API_URL_PRD }}" >> $GITHUB_ENV
+          echo "APP_VARIANT=production" >> $GITHUB_ENV
+          echo "GOOGLE_SERVICES_FILE_ANDROID_BASE64=${{ secrets.GOOGLE_SERVICES_FILE_ANDROID_BASE64_PRD }}" >> $GITHUB_ENV
+          echo "GOOGLE_SERVICES_FILE_IOS_BASE64=${{ secrets.GOOGLE_SERVICES_FILE_IOS_BASE64_PRD }}" >> $GITHUB_ENV
+          echo "GOOGLE_SERVICE_ACCOUNT_KEY_BASE64=${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY_BASE64_PRD }}" >> $GITHUB_ENV
+
+      - name: Generate .env file
+        working-directory: apps/mobile
+        run: |
+          echo "EXPO_PUBLIC_API_URL=$API_URL" >> .env
+          echo "APP_VARIANT=$APP_VARIANT" >> .env
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: IOS Build and Submit to stg
+        if: ${{ github.base_ref == 'staging' || github.ref == 'refs/heads/staging' }}
+        working-directory: apps/mobile
+        run: |
+          echo ${{ env.GOOGLE_SERVICES_FILE_ANDROID_BASE64 }} | base64 -d > google-services.json
+          echo ${{ env.GOOGLE_SERVICES_FILE_IOS_BASE64 }} | base64 -d > GoogleService-Info.plist
+          echo ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 -d > app-store-connect-api-key.p8
+          npx --package eas-cli eas build \
+            --platform ios \
+            --profile staging \
+            --non-interactive \
+            --auto-submit \
+            --no-wait
+
+      - name: Android Build to stg
+        if: ${{ github.base_ref == 'staging' || github.ref == 'refs/heads/staging' }}
+        working-directory: apps/mobile
+        run: |
+          npx --package eas-cli eas build \
+            --platform android \
+            --profile staging \
+            --non-interactive \
+            --no-wait
+
+      - name: Build and Submit to prd
+        if: ${{ github.base_ref == 'production' || github.ref == 'refs/heads/production' }}
+        working-directory: apps/mobile
+        run: |
+          echo ${{ env.GOOGLE_SERVICES_FILE_ANDROID_BASE64 }} | base64 -d > google-services.json
+          echo ${{ env.GOOGLE_SERVICES_FILE_IOS_BASE64 }} | base64 -d > GoogleService-Info.plist
+          echo ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 -d > app-store-connect-api-key.p8
+          echo ${{ env.GOOGLE_SERVICE_ACCOUNT_KEY_BASE64 }} | base64 -d > google-service-account-key.json
+          npx --package eas-cli eas build \
+            --platform all \
+            --profile production \
+            --non-interactive \
+            --auto-submit \
+            --no-wait

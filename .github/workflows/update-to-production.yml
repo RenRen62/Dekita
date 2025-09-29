@@ -1,0 +1,62 @@
+name: Update to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: '本番環境にOTA Updateをするワークフローです。実行する場合は、productionブランチを選択しチェックを入れてください。'
+        type: boolean
+        required: true
+        default: false
+
+jobs:
+  check-branch-and-permissions:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.confirm }}
+    steps:
+      - name: Check branch
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+
+          if [ "$BRANCH_NAME" != "production" ]; then
+            echo "Error: ブランチ '$BRANCH_NAME' は許可されていません。production を使用してください。"
+            exit 1
+          fi
+
+      - name: Check if user has admin permission
+        run: |
+          USER_PERMISSION=$(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                          -H "Accept: application/vnd.github.v3+json" \
+                          https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission | jq -r .permission)
+          if [ "$USER_PERMISSION" != "admin" ]; then
+            echo "Admin権限のないユーザーは実行できません"
+            exit 1
+          fi
+
+  eas-update:
+    needs: check-branch-and-permissions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set env to prd
+        if: ${{ github.base_ref == 'production' || github.ref == 'refs/heads/production' }}
+        run: |
+          echo "API_URL=${{ secrets.API_URL_PRD }}" >> $GITHUB_ENV
+          echo "APP_VARIANT=production" >> $GITHUB_ENV
+
+      - name: Generate .env file
+        working-directory: apps/mobile
+        run: |
+          echo "EXPO_PUBLIC_API_URL=$API_URL" >> .env
+          echo "APP_VARIANT=$APP_VARIANT" >> .env
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: EAS Update for Prd
+        run: npx eas-cli update --non-interactive --auto --branch production

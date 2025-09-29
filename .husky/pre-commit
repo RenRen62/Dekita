@@ -1,0 +1,2 @@
+pnpm --filter @dekita/mobile lint-staged
+pnpm --filter @dekita/lambda lint-staged

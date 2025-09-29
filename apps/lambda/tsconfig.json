@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "/opt/nodejs/*": ["./src/*"]
+    },
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "strictNullChecks": true,
+    "module": "commonjs",
+    "target": "ES2022",
+    "incremental": true,
+    "removeComments": true,
+    "exactOptionalPropertyTypes": false,
+    "declaration": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "layers"]
+}

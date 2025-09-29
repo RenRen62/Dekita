@@ -1,0 +1,70 @@
+name: Build Dev Client
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        required: true
+        description: 'Platform'
+        type: choice
+        options:
+          - all
+          - ios
+          - android
+        default: 'all'
+      profile:
+        required: true
+        description: 'Profile'
+        type: choice
+        options:
+          - development
+          - development-simulator
+        default: 'development'
+      clearCache:
+        required: false
+        description: 'Clear Cache'
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    name: Build DevClient
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          package: '@aeon-pet/mobile'
+
+      - name: Set env
+        run: |
+          echo "API_URL=${{ secrets.API_URL_DEV }}" >> $GITHUB_ENV
+          echo "APP_VARIANT=development" >> $GITHUB_ENV
+          echo "GOOGLE_SERVICES_FILE_ANDROID_BASE64=${{ secrets.GOOGLE_SERVICES_FILE_ANDROID_BASE64_DEV }}" >> $GITHUB_ENV
+          echo "GOOGLE_SERVICES_FILE_IOS_BASE64=${{ secrets.GOOGLE_SERVICES_FILE_IOS_BASE64_DEV }}" >> $GITHUB_ENV
+
+      - name: Generate .env file
+        run: |
+          echo "EXPO_PUBLIC_API_URL=$API_URL" >> .env
+          echo "APP_VARIANT=$APP_VARIANT" >> .env
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build
+        working-directory: apps/mobile
+        run: |
+          echo ${{ env.GOOGLE_SERVICES_FILE_ANDROID_BASE64 }} | base64 -d > google-services.json
+          echo ${{ env.GOOGLE_SERVICES_FILE_IOS_BASE64 }} | base64 -d > GoogleService-Info.plist
+          npx --package eas-cli eas build \
+            --platform ${{ github.event.inputs.platform }} \
+            --profile ${{ github.event.inputs.profile }} \
+            ${{ (github.event.inputs.clearCache == 'true' && '--clear-cache') || '' }} \
+            --non-interactive \
+            --no-wait
