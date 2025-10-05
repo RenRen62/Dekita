@@ -35,11 +35,11 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          package: '@aeon-pet/lambda'
+          package: '@dekita/lambda'
 
       - name: Execute jest
         run: |
-          pnpm --filter @aeon-pet/lambda test:cov
+          pnpm --filter @dekita/lambda test:cov
 
       - name: Jest coverage comment
         if: always()

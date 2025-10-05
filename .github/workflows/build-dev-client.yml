@@ -37,7 +37,7 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          package: '@aeon-pet/mobile'
+          package: '@dekita/mobile'
 
       - name: Set env
         run: |

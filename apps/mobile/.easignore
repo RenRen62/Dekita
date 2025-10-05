@@ -1,0 +1,15 @@
+node_modules/
+.expo/
+dist/
+npm-debug.*
+web-build/
+*.apk
+
+coverage/
+stories/
+*.local
+
+*.log
+logs
+
+.DS_Store
