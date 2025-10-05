@@ -48,10 +48,10 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          package: '@aeon-pet/mobile'
+          package: '@dekita/mobile'
 
       - name: Build API Client
-        run: pnpm --filter @aeon-pet/mobile prepare:ci
+        run: pnpm --filter @dekita/mobile prepare:ci
         env:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -84,30 +84,6 @@ jobs:
         with:
           expo-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: IOS Build and Submit to stg
-        if: ${{ github.base_ref == 'staging' || github.ref == 'refs/heads/staging' }}
-        working-directory: apps/mobile
-        run: |
-          echo ${{ env.GOOGLE_SERVICES_FILE_ANDROID_BASE64 }} | base64 -d > google-services.json
-          echo ${{ env.GOOGLE_SERVICES_FILE_IOS_BASE64 }} | base64 -d > GoogleService-Info.plist
-          echo ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 -d > app-store-connect-api-key.p8
-          npx --package eas-cli eas build \
-            --platform ios \
-            --profile staging \
-            --non-interactive \
-            --auto-submit \
-            --no-wait
-
-      - name: Android Build to stg
-        if: ${{ github.base_ref == 'staging' || github.ref == 'refs/heads/staging' }}
-        working-directory: apps/mobile
-        run: |
-          npx --package eas-cli eas build \
-            --platform android \
-            --profile staging \
-            --non-interactive \
-            --no-wait
 
       - name: Build and Submit to prd
         if: ${{ github.base_ref == 'production' || github.ref == 'refs/heads/production' }}

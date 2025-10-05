@@ -37,11 +37,11 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          package: '@aeon-pet/mobile'
+          package: '@dekita/mobile'
 
       - name: Execute jest
         run: |
-          pnpm --filter @aeon-pet/mobile test
+          pnpm --filter @dekita/mobile test
         env:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -73,7 +73,7 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          package: '@aeon-pet/mobile'
+          package: '@dekita/mobile'
 
       - name: Set env to stg
         if: ${{ github.base_ref == 'staging' || github.ref == 'refs/heads/staging' }}

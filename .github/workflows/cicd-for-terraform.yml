@@ -39,76 +39,17 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          package: '@aeon-pet/lambda'
+          package: '@dekita/lambda'
 
       - name: Set env to dev
         if: ${{ github.base_ref == 'main' || github.ref == 'refs/heads/main' }}
         run: |
           echo "TERRAFORM_DIR=./terraform/envs/dev" >> $GITHUB_ENV
-          echo "AWS_REGION=ap-northeast-1" >> $GITHUB_ENV
-          echo "AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID_DEV }}" >> $GITHUB_ENV
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID_DEV }}" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}" >> $GITHUB_ENV
-          echo "USER_LOGIN_PASSWORD=${{ secrets.USER_LOGIN_PASSWORD }}" >> $GITHUB_ENV
-          echo "GOOGLE_SERVICE_ACCOUNT_KEY_BASE64=${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY_BASE64_DEV }}" >> $GITHUB_ENV
-          echo "MAPS_PLATFORM_API_KEY=${{ secrets.MAPS_PLATFORM_API_KEY_DEV }}" >> $GITHUB_ENV
-          echo "LAMBDA_SCHEDULE_TOKEN=${{ secrets.LAMBDA_SCHEDULE_TOKEN }}" >> $GITHUB_ENV
-          echo "ADMIN_USER1_PASSWORD=${{ secrets.ADMIN_USER1_PASSWORD }}" >> $GITHUB_ENV
-          echo "ADMIN_USER2_PASSWORD=${{ secrets.ADMIN_USER2_PASSWORD }}" >> $GITHUB_ENV
-          echo "ADMIN_USER3_PASSWORD=${{ secrets.ADMIN_USER3_PASSWORD }}" >> $GITHUB_ENV
-          echo "X1_GLOBAL_IP_ADDRESS1=${{ secrets.X1_GLOBAL_IP_ADDRESS1 }}" >> $GITHUB_ENV
-          echo "GP_GLOBAL_IP_ADDRESS1=${{ secrets.GP_GLOBAL_IP_ADDRESS1 }}" >> $GITHUB_ENV
-          echo "GP_GLOBAL_IP_ADDRESS2=${{ secrets.GP_GLOBAL_IP_ADDRESS2 }}" >> $GITHUB_ENV
-          echo "GP_GLOBAL_IP_ADDRESS3=${{ secrets.GP_GLOBAL_IP_ADDRESS3 }}" >> $GITHUB_ENV
-          echo "AP_GLOBAL_IP_ADDRESS1=${{ secrets.AP_GLOBAL_IP_ADDRESS1 }}" >> $GITHUB_ENV
-          echo "SES_ALERT_SLACK_BOT_TOKEN=${{ secrets.SES_ALERT_SLACK_BOT_TOKEN }}" >> $GITHUB_ENV
-          echo "FITSHOP_API_ACCESS_TOKEN=${{ secrets.FITSHOP_API_ACCESS_TOKEN_DEV }}" >> $GITHUB_ENV
-
-      - name: Set env to stg
-        if: ${{ github.base_ref == 'staging' || github.ref == 'refs/heads/staging' }}
-        run: |
-          echo "TERRAFORM_DIR=./terraform/envs/stg" >> $GITHUB_ENV
-          echo "AWS_REGION=ap-northeast-1" >> $GITHUB_ENV
-          echo "AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID_STG }}" >> $GITHUB_ENV
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID_STG }}" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY_STG }}" >> $GITHUB_ENV
-          echo "USER_LOGIN_PASSWORD=${{ secrets.USER_LOGIN_PASSWORD }}" >> $GITHUB_ENV
-          echo "GOOGLE_SERVICE_ACCOUNT_KEY_BASE64=${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY_BASE64_STG }}" >> $GITHUB_ENV
-          echo "MAPS_PLATFORM_API_KEY=${{ secrets.MAPS_PLATFORM_API_KEY_STG }}" >> $GITHUB_ENV
-          echo "LAMBDA_SCHEDULE_TOKEN=${{ secrets.LAMBDA_SCHEDULE_TOKEN }}" >> $GITHUB_ENV
-          echo "ADMIN_USER1_PASSWORD=${{ secrets.ADMIN_USER1_PASSWORD }}" >> $GITHUB_ENV
-          echo "ADMIN_USER2_PASSWORD=${{ secrets.ADMIN_USER2_PASSWORD }}" >> $GITHUB_ENV
-          echo "ADMIN_USER3_PASSWORD=${{ secrets.ADMIN_USER3_PASSWORD }}" >> $GITHUB_ENV
-          echo "X1_GLOBAL_IP_ADDRESS1=${{ secrets.X1_GLOBAL_IP_ADDRESS1 }}" >> $GITHUB_ENV
-          echo "GP_GLOBAL_IP_ADDRESS1=${{ secrets.GP_GLOBAL_IP_ADDRESS1 }}" >> $GITHUB_ENV
-          echo "GP_GLOBAL_IP_ADDRESS2=${{ secrets.GP_GLOBAL_IP_ADDRESS2 }}" >> $GITHUB_ENV
-          echo "GP_GLOBAL_IP_ADDRESS3=${{ secrets.GP_GLOBAL_IP_ADDRESS3 }}" >> $GITHUB_ENV
-          echo "AP_GLOBAL_IP_ADDRESS1=${{ secrets.AP_GLOBAL_IP_ADDRESS1 }}" >> $GITHUB_ENV
-          echo "SES_ALERT_SLACK_BOT_TOKEN=${{ secrets.SES_ALERT_SLACK_BOT_TOKEN }}" >> $GITHUB_ENV
-          echo "FITSHOP_API_ACCESS_TOKEN=${{ secrets.FITSHOP_API_ACCESS_TOKEN_STG }}" >> $GITHUB_ENV
 
       - name: Set env to prd
         if: ${{ github.base_ref == 'production' || github.ref == 'refs/heads/production' }}
         run: |
           echo "TERRAFORM_DIR=./terraform/envs/prd" >> $GITHUB_ENV
-          echo "AWS_REGION=ap-northeast-1" >> $GITHUB_ENV
-          echo "AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID_PRD }}" >> $GITHUB_ENV
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID_PRD }}" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY_PRD }}" >> $GITHUB_ENV
-          echo "USER_LOGIN_PASSWORD=${{ secrets.USER_LOGIN_PASSWORD }}" >> $GITHUB_ENV
-          echo "GOOGLE_SERVICE_ACCOUNT_KEY_BASE64=${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY_BASE64_PRD }}" >> $GITHUB_ENV
-          echo "MAPS_PLATFORM_API_KEY=${{ secrets.MAPS_PLATFORM_API_KEY_PRD }}" >> $GITHUB_ENV
-          echo "LAMBDA_SCHEDULE_TOKEN=${{ secrets.LAMBDA_SCHEDULE_TOKEN }}" >> $GITHUB_ENV
-          echo "ADMIN_USER1_PASSWORD=${{ secrets.ADMIN_USER1_PASSWORD }}" >> $GITHUB_ENV
-          echo "ADMIN_USER2_PASSWORD=${{ secrets.ADMIN_USER2_PASSWORD }}" >> $GITHUB_ENV
-          echo "ADMIN_USER3_PASSWORD=${{ secrets.ADMIN_USER3_PASSWORD }}" >> $GITHUB_ENV
-          echo "X1_GLOBAL_IP_ADDRESS1=${{ secrets.X1_GLOBAL_IP_ADDRESS1 }}" >> $GITHUB_ENV
-          echo "GP_GLOBAL_IP_ADDRESS1=${{ secrets.GP_GLOBAL_IP_ADDRESS1 }}" >> $GITHUB_ENV
-          echo "GP_GLOBAL_IP_ADDRESS2=${{ secrets.GP_GLOBAL_IP_ADDRESS2 }}" >> $GITHUB_ENV
-          echo "GP_GLOBAL_IP_ADDRESS3=${{ secrets.GP_GLOBAL_IP_ADDRESS3 }}" >> $GITHUB_ENV
-          echo "AP_GLOBAL_IP_ADDRESS1=${{ secrets.AP_GLOBAL_IP_ADDRESS1 }}" >> $GITHUB_ENV
-          echo "SES_ALERT_SLACK_BOT_TOKEN=${{ secrets.SES_ALERT_SLACK_BOT_TOKEN }}" >> $GITHUB_ENV
-          echo "FITSHOP_API_ACCESS_TOKEN=${{ secrets.FITSHOP_API_ACCESS_TOKEN_PRD }}" >> $GITHUB_ENV
 
       - name: configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1-node16
@@ -132,8 +73,8 @@ jobs:
 
       - name: Set up lambda function
         run: |
-          pnpm --filter @aeon-pet/lambda prisma:generate
-          pnpm --filter @aeon-pet/lambda tsc
+          pnpm --filter @dekita/lambda prisma:generate
+          pnpm --filter @dekita/lambda tsc
           sh ./apps/lambda/layer_setup.sh
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -149,24 +90,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd ${{ env.TERRAFORM_DIR }}
-          tfcmt plan -patch -- terraform plan -no-color -input=false \
-              -var="account_id=${{ env.AWS_ACCOUNT_ID }}" \
-              -var="aws_access_key_id=${{ env.AWS_ACCESS_KEY_ID }}" \
-              -var="aws_secret_access_key=${{ env.AWS_SECRET_ACCESS_KEY }}" \
-              -var="user_login_password=${{ env.USER_LOGIN_PASSWORD }}" \
-              -var="google_service_account_key_base64=${{ env.GOOGLE_SERVICE_ACCOUNT_KEY_BASE64 }}" \
-              -var="maps_platform_api_key=${{ env.MAPS_PLATFORM_API_KEY }}" \
-              -var="lambda_schedule_token=${{ env.LAMBDA_SCHEDULE_TOKEN }}" \
-              -var="admin_user1_password=${{ env.ADMIN_USER1_PASSWORD }}" \
-              -var="admin_user2_password=${{ env.ADMIN_USER2_PASSWORD }}" \
-              -var="admin_user3_password=${{ env.ADMIN_USER3_PASSWORD }}" \
-              -var="x1_global_ip_address1=${{ env.X1_GLOBAL_IP_ADDRESS1 }}" \
-              -var="gp_global_ip_address1=${{ env.GP_GLOBAL_IP_ADDRESS1 }}" \
-              -var="gp_global_ip_address2=${{ env.GP_GLOBAL_IP_ADDRESS2 }}" \
-              -var="gp_global_ip_address3=${{ env.GP_GLOBAL_IP_ADDRESS3 }}" \
-              -var="ap_global_ip_address1=${{ env.AP_GLOBAL_IP_ADDRESS1 }}" \
-              -var="ses_alert_slack_bot_token=${{ env.SES_ALERT_SLACK_BOT_TOKEN }}" \
-              -var="fitshop_api_access_token=${{ env.FITSHOP_API_ACCESS_TOKEN }}" \
+          tfcmt plan -patch -- terraform plan -no-color -input=false
 
       - name: terraform apply
         id: apply
@@ -174,21 +98,4 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: |
           cd ${{ env.TERRAFORM_DIR }}
-          terraform apply -auto-approve \
-              -var="account_id=${{ env.AWS_ACCOUNT_ID }}" \
-              -var="aws_access_key_id=${{ env.AWS_ACCESS_KEY_ID }}" \
-              -var="aws_secret_access_key=${{ env.AWS_SECRET_ACCESS_KEY }}" \
-              -var="user_login_password=${{ env.USER_LOGIN_PASSWORD }}" \
-              -var="google_service_account_key_base64=${{ env.GOOGLE_SERVICE_ACCOUNT_KEY_BASE64 }}" \
-              -var="maps_platform_api_key=${{ env.MAPS_PLATFORM_API_KEY }}" \
-              -var="lambda_schedule_token=${{ env.LAMBDA_SCHEDULE_TOKEN }}" \
-              -var="admin_user1_password=${{ env.ADMIN_USER1_PASSWORD }}" \
-              -var="admin_user2_password=${{ env.ADMIN_USER2_PASSWORD }}" \
-              -var="admin_user3_password=${{ env.ADMIN_USER3_PASSWORD }}" \
-              -var="x1_global_ip_address1=${{ env.X1_GLOBAL_IP_ADDRESS1 }}" \
-              -var="gp_global_ip_address1=${{ env.GP_GLOBAL_IP_ADDRESS1 }}" \
-              -var="gp_global_ip_address2=${{ env.GP_GLOBAL_IP_ADDRESS2 }}" \
-              -var="gp_global_ip_address3=${{ env.GP_GLOBAL_IP_ADDRESS3 }}" \
-              -var="ap_global_ip_address1=${{ env.AP_GLOBAL_IP_ADDRESS1 }}" \
-              -var="ses_alert_slack_bot_token=${{ env.SES_ALERT_SLACK_BOT_TOKEN }}" \
-              -var="fitshop_api_access_token=${{ env.FITSHOP_API_ACCESS_TOKEN }}" \
+          terraform apply -auto-approve
