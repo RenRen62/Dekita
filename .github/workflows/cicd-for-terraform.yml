@@ -24,14 +24,6 @@ jobs:
     if: ${{ (! failure() || github.event.action == 'labeled' && github.event.label.name == 'tested') }}
     runs-on: ubuntu-latest
     steps:
-      - name: github app access token
-        uses: actions/create-github-app-token@v1
-        id: get-github-app
-        with:
-          app-id: ${{ secrets.TOKEN_GENERATOR_APP_ID }}
-          private-key: ${{ secrets.TOKEN_GENERATOR_PRIVATE_KEY}}
-          owner: ${{ github.repository_owner }}
-
       - name: Checkout branch
         uses: actions/checkout@v4
 
