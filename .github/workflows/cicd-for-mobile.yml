@@ -33,7 +33,7 @@ jobs:
 
       - name: Execute jest
         run: |
-          pnpm --filter @dekita/mobile test
+          pnpm --filter @dekita/mobile test:cov
         env:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
