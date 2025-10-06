@@ -8,7 +8,7 @@ module.exports = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest'
   },
-  collectCoverageFrom: ['**/*.(t|j)s', '!**/index.ts'],
+  collectCoverageFrom: ['utils/**/*.(t|j)s', '!**/index.ts'],
   coveragePathIgnorePatterns: [
     'coverage',
     'node_modules',
@@ -17,7 +17,7 @@ module.exports = {
     'eslintrc.js',
     'babel.config.js'
   ],
-  coverageDirectory: '../coverage',
+  coverageDirectory: './coverage',
   testEnvironment: 'node',
   reporters: [
     'default',
