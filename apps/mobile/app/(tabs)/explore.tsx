@@ -3,8 +3,8 @@ import { View, Text } from 'react-native';
 
 export default function TabTwoScreen() {
   return (
-    <View>
-      <Text>Explore Screen</Text>
+    <View className='flex-1 items-center justify-center bg-white'>
+      <Text className='text-2xl text-blue-500'>Explore Screen</Text>
     </View>
   );
 }
