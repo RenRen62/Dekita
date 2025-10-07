@@ -65,7 +65,6 @@ jobs:
 
       - name: Set up lambda function
         run: |
-          pnpm --filter @dekita/lambda prisma:generate
           pnpm --filter @dekita/lambda tsc
           sh ./apps/lambda/layer_setup.sh
         env:

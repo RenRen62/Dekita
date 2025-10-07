@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda_iam_role" {
-  name                = "lambda_iam_role"
+  name                = "lambda_iam_role_${var.project_name}"
   managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"]
 
   assume_role_policy = <<POLICY
