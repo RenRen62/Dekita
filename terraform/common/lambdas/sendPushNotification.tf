@@ -1,4 +1,4 @@
-module "send_push_notification_function" {
+module "send_push_notification" {
   source           = "./templates"
   function_name    = "sendPushNotification"
   memory_size      = 128
@@ -6,6 +6,6 @@ module "send_push_notification_function" {
   layers           = [aws_lambda_layer_version.common_layer.arn]
 }
 
-output "arn_send_push_notification_function" {
-  value = module.send_push_notification_function.arn
+output "arn_send_push_notification" {
+  value = module.send_push_notification.arn_function
 }

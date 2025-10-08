@@ -1,18 +1,22 @@
 import { testUtilFunction } from '/opt/nodejs/utils';
 
+// CI/CD検証用コメント
+
 type Event = { url: string };
 
 export const handler = sendPushNotification;
 
 /**
- * 定時処理用のAPIを呼び出すlambda関数
- * CI/CD検証用
+ * サンプル Lambda 関数
  */
 async function sendPushNotification(event: Event) {
   const { url } = event;
 
   try {
+    // eslint-disable-next-line functional/no-expression-statements
     console.log('Function Called!');
+
+    // eslint-disable-next-line functional/no-expression-statements
     testUtilFunction();
     return {
       statusCode: 200,

@@ -7,7 +7,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "Dekita-tfstate"
+    bucket = "dekita-tfstate"
     key    = "terraform.tfstate"
     region = "ap-northeast-1"
   }

@@ -66,8 +66,7 @@ module.exports = {
       extends: ['plugin:functional/recommended'],
       plugins: ['functional'],
       rules: {
-        'functional/prefer-immutable-types': 'off',
-        'functional/no-expression-statements': 'off'
+        'functional/prefer-immutable-types': 'off'
       }
     }
   ]
