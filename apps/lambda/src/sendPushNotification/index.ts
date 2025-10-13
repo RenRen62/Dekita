@@ -1,6 +1,6 @@
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { addDataToDynamoDB, testUtilFunction } from '/opt/nodejs/utils';
-import { docClient } from '/opt/nodejs//utils/dynamodb/client';
+import { docClient } from '/opt/nodejs/utils/dynamodb/client';
 
 // CI/CD検証用コメント
 

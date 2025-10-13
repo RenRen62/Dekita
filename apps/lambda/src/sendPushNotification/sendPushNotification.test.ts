@@ -3,7 +3,7 @@ import { sendPushNotification } from './index';
 
 describe('sendPushNotification', () => {
   test('正常系', async () => {
-    const url = 'https://sendーpush-notification-normal-case.com';
+    const url = 'https://send-push-notification-normal-case.com';
     const event = { url };
 
     const handler = sendPushNotification(testDocClient);
@@ -12,7 +12,7 @@ describe('sendPushNotification', () => {
   });
 
   test('異常系 - 500', async () => {
-    const url = 'https://sendーpush-notification-error-case.com';
+    const url = 'https://send-push-notification-error-case.com';
     const event = { url };
 
     // testUtilFunctionがthrowするようにモック
