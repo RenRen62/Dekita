@@ -1,14 +1,14 @@
-# クライアントテーブル
-resource "aws_dynamodb_table" "user" {
-  name           = "user"
+# メインテーブル
+resource "aws_dynamodb_table" "main" {
+  name           = "main"
   billing_mode   = "PROVISIONED"
   read_capacity  = 1 # AutoScalingの場合は便宜上1にしておく
   write_capacity = 1 # AutoScalingの場合は便宜上1にしておく
-  hash_key       = "id"
+  hash_key       = "pk"
   range_key      = "sk"
 
   attribute {
-    name = "id"
+    name = "pk"
     type = "S"
   }
 
@@ -28,7 +28,7 @@ resource "aws_dynamodb_table" "user" {
 
 module "settings_auto_scale" {
   source             = "./auto_scale"
-  table_name         = aws_dynamodb_table.user.name
+  table_name         = aws_dynamodb_table.main.name
   read_max_capacity  = local.capacity_units_max
   read_min_capacity  = local.capacity_units_mid
   write_max_capacity = local.capacity_units_max

@@ -1,12 +1,75 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "aeon pet swagger",
-    "description": "aeon pet swagger",
+    "title": "dekita-app swagger",
+    "description": "dekita-app swagger",
     "version": "1.0.0"
   },
-  "components": {
-    "schemas": {}
+  "paths": {
+    "/notification": {
+      "post": {
+        "description": "プッシュ通知送信",
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": "${arn_send_push_notification}",
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "credentials": "${arn_invoke_role}",
+          "connectionType": "INTERNET"
+        }
+      }
+    }
   },
-  "paths": {}
+  "components": {
+    "schemas": {
+      "error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "error"
+          }
+        }
+      }
+    },
+    "x-amazon-apigateway-integrations": {
+      "send_push_notification": {
+        "uri": "${arn_send_push_notification}",
+        "payloadFormatVersion": "2.0",
+        "type": "aws_proxy",
+        "httpMethod": "POST",
+        "credentials": "${arn_invoke_role}",
+        "connectionType": "INTERNET"
+      }
+    }
+  }
 }

@@ -5,14 +5,16 @@
   "version": "1.0.0",
   "scripts": {
     "clean-dist": "rimraf ./dist",
-    "test": "jest --config jest.config.js",
-    "test:cov": "jest --config jest.config.js --colors --coverage",
+    "test": "ts-node -r tsconfig-paths/register db/createTable.ts && jest --config jest.config.js",
+    "test:cov": "ts-node -r tsconfig-paths/register db/createTable.ts && jest --config jest.config.js --colors --coverage",
     "tsc": "pnpm clean-dist && tsc -p tsconfig.build.json",
     "lint": "eslint --fix --config .eslintrc.js ./**/*.ts",
     "lint-staged": "lint-staged --config .lintstagedrc.js",
     "check-changed": "CHANGED_FILES=$( (git diff --name-only HEAD && git ls-files --others --exclude-standard) | grep -E '\\.(ts|tsx)$' | grep '^apps/lambda/' || true); (if [ -n \"$CHANGED_FILES\" ]; then echo \"Processing files:\"; echo \"$CHANGED_FILES\"; echo \"$CHANGED_FILES\" | sed 's|^apps/lambda/||' | xargs eslint --cache --cache-location .eslintcache --max-warnings 0; fi) & (npx tsc --noEmit --incremental --tsBuildInfoFile .tsbuildinfo) & wait"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.902.0",
+    "@aws-sdk/lib-dynamodb": "^3.902.0",
     "dayjs": "^1.11.10",
     "ramda": "^0.30.0",
     "ts-pattern": "^5.1.1"

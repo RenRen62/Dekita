@@ -22,6 +22,6 @@
     "exactOptionalPropertyTypes": false,
     "declaration": true
   },
-  "include": ["src"],
+  "include": ["src", "db"],
   "exclude": ["node_modules", "dist", "layers"]
 }
