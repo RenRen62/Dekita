@@ -1,37 +1,44 @@
-import { testUtilFunction } from '/opt/nodejs/utils';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { addDataToDynamoDB, testUtilFunction } from '/opt/nodejs/utils';
+import { docClient } from '/opt/nodejs/utils/dynamodb/client';
 
 // CI/CD検証用コメント
 
 type Event = { url: string };
 
-export const handler = sendPushNotification;
-
 /**
  * サンプル Lambda 関数
  */
-async function sendPushNotification(event: Event) {
-  const { url } = event;
+export const sendPushNotification = (docClient: DynamoDBDocumentClient) => {
+  return async (event: Event) => {
+    const { url } = event;
+    try {
+      // eslint-disable-next-line functional/no-expression-statements
+      testUtilFunction();
 
-  try {
-    // eslint-disable-next-line functional/no-expression-statements
-    console.log('Function Called!');
+      const res = await addDataToDynamoDB(docClient, 'main', {
+        pk: `USER#${url}`,
+        sk: 'PROFILE',
+        url: url
+      });
 
-    // eslint-disable-next-line functional/no-expression-statements
-    testUtilFunction();
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'POST request was successful',
-        responseData: url
-      })
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: 'Failed to send POST request',
-        error: error
-      })
-    };
-  }
-}
+      return {
+        statusCode: res.$metadata.httpStatusCode,
+        body: JSON.stringify({
+          message: 'POST request was successful'
+        })
+      };
+    } catch (error) {
+      // eslint-disable-next-line functional/no-expression-statements
+      console.error(error);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          message: 'Failed to send POST request'
+        })
+      };
+    }
+  };
+};
+
+export const handler = sendPushNotification(docClient);
