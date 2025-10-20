@@ -18,8 +18,6 @@ type ContainerProps = {
   scrollEnabled?: boolean;
   bgColor?: 'white' | 'beige';
   barStyle?: 'dark-content' | 'light-content';
-  backgroundColor?: string;
-  isPaddingTop?: boolean;
   refreshControl?: React.ReactElement<RefreshControlProps>;
 };
 
