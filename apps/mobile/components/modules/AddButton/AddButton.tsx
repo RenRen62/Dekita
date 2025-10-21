@@ -1,6 +1,7 @@
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import React, { memo } from 'react';
-import { TouchableOpacity, Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
+import { Button } from '@/components/bases/Button';
 
 type AddButtonProps = {
   onPress: () => void;
@@ -8,14 +9,14 @@ type AddButtonProps = {
 
 const AddButton = ({ onPress }: AddButtonProps) => {
   return (
-    <TouchableOpacity
+    <Button
       className='absolute bottom-6 right-6 h-16 w-16 items-center justify-center rounded-full bg-[#ff9e9e]'
       style={styles.shadow}
       onPress={onPress}
       activeOpacity={0.8}
     >
       <FontAwesome6 name='add' size={20} color='white' />
-    </TouchableOpacity>
+    </Button>
   );
 };
 

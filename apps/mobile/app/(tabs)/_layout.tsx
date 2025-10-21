@@ -3,8 +3,8 @@ import Feather from '@expo/vector-icons/Feather';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs } from 'expo-router';
 import React, { useMemo } from 'react';
-import { TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Button } from '@/components/bases/Button';
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
@@ -55,13 +55,13 @@ export default function TabLayout() {
           headerTitleAllowFontScaling: false,
           headerTitleAlign: 'left',
           headerRight: () => (
-            <TouchableOpacity
+            <Button
               onPress={() => {
                 // TODO: カレンダー編集機能
               }}
             >
               <MaterialIcons name='edit-calendar' size={24} color='#ff9e9e' />
-            </TouchableOpacity>
+            </Button>
           ),
           headerRightContainerStyle: {
             paddingRight: 14
