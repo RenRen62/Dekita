@@ -9,11 +9,7 @@ export default function HomeScreen() {
       <Container>
         <View className='flex-1 items-center justify-center'>
           <Text className='text-2xl'>Home Screen</Text>
-          <Button
-            onPress={() => console.log('aaa')}
-            text='次へ'
-            variant='primary'
-          />
+          <Button onPress={() => null} text='次へ' />
         </View>
       </Container>
       <AddButton onPress={() => null} />
