@@ -20,12 +20,27 @@ const colorStyle = {
   pink: {
     bg: 'bg-primary',
     border: 'border-primary',
-    hex: '#ec4899'
+    hex: '#ff9e9e'
   },
   yellow: {
     bg: 'bg-yellow-400',
     border: 'border-yellow-400',
     hex: '#facc15'
+  },
+  blue: {
+    bg: 'bg-sky-400',
+    border: 'border-sky-400',
+    hex: '#60a5fa'
+  },
+  green: {
+    bg: 'bg-emerald-400',
+    border: 'border-emerald-400',
+    hex: '#34d399'
+  },
+  purple: {
+    bg: 'bg-purple-400',
+    border: 'border-purple-400',
+    hex: '#a78bfa'
   }
 };
 

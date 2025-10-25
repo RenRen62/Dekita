@@ -17,7 +17,12 @@ const achievementList = [
   {
     title: '初めての歯磨き',
     achievedAt: '12/12',
-    color: 'pink' as const
+    color: 'blue' as const
+  },
+  {
+    title: '数字が書けたよ',
+    achievedAt: '12/29',
+    color: 'yellow' as const
   }
 ];
 
