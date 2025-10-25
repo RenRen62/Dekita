@@ -78,7 +78,6 @@ const AchievementItem = ({
               start={{ x: 0, y: 0 }}
               end={{ x: 0, y: 1 }}
             />
-            // <View className={cn('  h-16 w-1', colorStyle[mainColor].bg)} />
           )}
         </View>
         {/* テキスト */}
