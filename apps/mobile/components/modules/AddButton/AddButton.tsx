@@ -10,7 +10,7 @@ type AddButtonProps = {
 const AddButton = ({ onPress }: AddButtonProps) => {
   return (
     <Button
-      className='absolute bottom-6 right-6 h-16 w-16 items-center justify-center rounded-full bg-[#ff9e9e]'
+      className='bg-primary absolute bottom-6 right-6 h-16 w-16 items-center justify-center rounded-full'
       style={styles.shadow}
       onPress={onPress}
       activeOpacity={0.8}

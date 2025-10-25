@@ -106,7 +106,9 @@ const ButtonComponent: ForwardRefRenderFunction<View, Props> = (
       disabled={disabled}
       onPress={handlePress}
       activeOpacity={0.8}
-      style={variant !== 'tertiary' ? styles.shadow : undefined}
+      style={
+        variant !== 'tertiary' && isTemplateButton ? styles.shadow : undefined
+      }
       {...props}
       className={cn(
         isTemplateButton && 'items-center justify-center',
