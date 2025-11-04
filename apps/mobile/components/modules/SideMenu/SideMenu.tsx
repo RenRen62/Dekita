@@ -19,6 +19,7 @@ type SideMenuProps = {
 };
 
 type ProfileItem = {
+  id: string;
   role: Role;
   gender: Gender;
   age: number;
@@ -26,11 +27,11 @@ type ProfileItem = {
 };
 
 const profileList: ProfileItem[] = [
-  { role: 'father', gender: 'male', age: 30, label: 'ますお' },
-  { role: 'mother', gender: 'female', age: 30, label: 'さざえ' },
-  { role: 'child', gender: 'male', age: 8, label: 'かつお' },
-  { role: 'child', gender: 'female', age: 6, label: 'わかめ' },
-  { role: 'child', gender: 'female', age: 2, label: 'たら' }
+  { id: '1', role: 'father', gender: 'male', age: 30, label: 'ますお' },
+  { id: '2', role: 'mother', gender: 'female', age: 30, label: 'さざえ' },
+  { id: '3', role: 'child', gender: 'male', age: 8, label: 'かつお' },
+  { id: '4', role: 'child', gender: 'female', age: 6, label: 'わかめ' },
+  { id: '5', role: 'child', gender: 'female', age: 2, label: 'たら' }
 ];
 
 // 画像マップ
@@ -119,9 +120,9 @@ const SideMenu = ({ visible, onClose }: SideMenuProps) => {
             <Text className='text-xl font-bold text-primary'>プロフィール</Text>
           </View>
           <ScrollView className='flex-1'>
-            {profileList.map((item, index) => (
+            {profileList.map((item) => (
               <Button
-                key={index}
+                key={item.id}
                 onPress={() => {
                   // ToDo: 遷移処理
                   onClose();
@@ -135,7 +136,7 @@ const SideMenu = ({ visible, onClose }: SideMenuProps) => {
                     fadeDuration={0}
                   />
                 </View>
-                <Text className='ml-4 text-lg font-semibold  text-gray-600'>
+                <Text className='ml-4 text-lg font-semibold text-gray-600'>
                   {item.label.length > 10
                     ? item.label.slice(0, 10) + '...'
                     : item.label}
@@ -145,7 +146,6 @@ const SideMenu = ({ visible, onClose }: SideMenuProps) => {
             <Button
               onPress={() => {
                 // ToDo: プロフィール追加画面へ遷移
-                null;
               }}
               text='+ 追加'
               variant='tertiary'

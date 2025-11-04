@@ -65,7 +65,7 @@ export default function TabLayout() {
             headerLeft: () => (
               <Button
                 onPress={() => setSideMenuVisible(true)}
-                className='h-12 w-12 items-center justify-center rounded-full '
+                className='h-12 w-12 items-center justify-center rounded-full'
               >
                 <MaterialIcons name='menu-book' size={24} color='#ff9e9e' />
               </Button>
